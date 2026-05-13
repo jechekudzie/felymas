@@ -14,9 +14,12 @@ use App\Http\Controllers\SlidersController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\VisionController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-// Public site
-Route::get('/', [SiteController::class, 'index']);
+// Inertia smoke-test landing — the React/Tailwind public site will replace this in phase 1.
+Route::get('/', fn () => Inertia::render('Welcome'));
+
+// Public site (Blade) — ported page-by-page in phase 2.
 Route::get('/about', [SiteController::class, 'about']);
 Route::get('/service', [SiteController::class, 'service']);
 Route::get('/our_team', [SiteController::class, 'ourTeam']);
@@ -28,7 +31,7 @@ Route::get('/blog_details/{id}', [SiteController::class, 'blogDetails']);
 Route::get('/project_details/{id}', [SiteController::class, 'projectDetails']);
 Route::post('/sendmail', [SiteController::class, 'sendEmail']);
 
-// Admin (auth + verified)
+// Admin (auth + verified) — stays on Blade until phase 4.
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/', fn () => redirect('/admin/about'));
 
@@ -69,14 +72,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::patch('team/image_cover/{team}', [TeamController::class, 'imageCover']);
 });
 
-// Breeze profile
+// Breeze profile (React/Inertia).
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Breeze dashboard alias (legacy /home)
+// Legacy aliases — point at admin.
 Route::get('/home', fn () => redirect('/admin'))->middleware(['auth', 'verified'])->name('home');
 Route::get('/dashboard', fn () => redirect('/admin'))->middleware(['auth', 'verified'])->name('dashboard');
 
