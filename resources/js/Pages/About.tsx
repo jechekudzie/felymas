@@ -1,0 +1,210 @@
+import { Head } from '@inertiajs/react';
+import CtaBand from '@/Components/public/CtaBand';
+import LogoGrid from '@/Components/public/LogoGrid';
+import Reveal from '@/Components/public/Reveal';
+import SectionHeading from '@/Components/public/SectionHeading';
+import TeamCard from '@/Components/public/TeamCard';
+import PublicLayout from '@/Layouts/PublicLayout';
+import type {
+    PartnerLogo,
+    Statement,
+    TeamMember,
+} from '@/types/public';
+
+type AboutProps = {
+    about: Statement | null;
+    vision: Statement | null;
+    mission: Statement | null;
+    partners: PartnerLogo[];
+    members: TeamMember[];
+};
+
+function decodeHtml(html: string) {
+    if (typeof window === 'undefined') return html.replace(/&nbsp;/g, ' ');
+    const ta = document.createElement('textarea');
+    ta.innerHTML = html;
+    return ta.value;
+}
+
+function plainText(html: string | undefined | null): string {
+    if (!html) return '';
+    return decodeHtml(html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+}
+
+export default function About({
+    about,
+    vision,
+    mission,
+    partners,
+    members,
+}: AboutProps) {
+    const aboutText = plainText(about?.description);
+    const visionText = plainText(vision?.description);
+    const missionText = plainText(mission?.description);
+    const leadership = members.slice(0, 4);
+
+    return (
+        <PublicLayout>
+            <Head title="About — Felymas Consultants International" />
+
+            {/* Editorial intro */}
+            <section className="bg-surface-0 pb-24 pt-40 md:pb-32 md:pt-48">
+                <div className="wrap">
+                    <Reveal>
+                        <p className="eyebrow">The practice</p>
+                    </Reveal>
+                    <Reveal delay={0.05}>
+                        <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
+                            Built for clients who need their projects to{' '}
+                            <span className="text-orange-500">land — and stay landed.</span>
+                        </h1>
+                    </Reveal>
+                    <Reveal delay={0.1}>
+                        <p className="mt-10 max-w-2xl text-lg leading-relaxed text-ink-700">
+                            Felymas Consultants International is a multi-disciplinary
+                            construction and engineering consultancy headquartered in
+                            Harare, with active work across Zimbabwe and South Africa.
+                            We were founded on a simple belief: that good projects
+                            require equal parts technical rigour and plain-spoken
+                            client communication.
+                        </p>
+                    </Reveal>
+                </div>
+            </section>
+
+            {/* Hero image */}
+            {about?.image && (
+                <Reveal as="figure" className="relative isolate aspect-[16/9] w-full overflow-hidden bg-ink-800">
+                    <img
+                        src={about.image}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                    />
+                </Reveal>
+            )}
+
+            {/* Long-form body */}
+            {aboutText && (
+                <section className="bg-surface-0 py-24 md:py-32">
+                    <div className="wrap grid gap-12 md:grid-cols-12">
+                        <Reveal className="md:col-span-4">
+                            <p className="eyebrow">Who we are</p>
+                            <h2 className="mt-6 font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+                                Engineers, project managers, and quantity surveyors — under one roof.
+                            </h2>
+                        </Reveal>
+                        <Reveal delay={0.1} className="md:col-span-7 md:col-start-6">
+                            <div className="prose prose-lg max-w-none text-ink-700">
+                                {aboutText.split(/\n+|(?<=\.) (?=[A-Z])/).slice(0, 6).map((para, idx) => (
+                                    <p key={idx} className="mt-4 text-lg leading-relaxed first:mt-0">
+                                        {para.trim()}
+                                    </p>
+                                ))}
+                            </div>
+                        </Reveal>
+                    </div>
+                </section>
+            )}
+
+            {/* Vision + Mission */}
+            <section className="bg-surface-50 py-24 md:py-32">
+                <div className="wrap">
+                    <SectionHeading
+                        eyebrow="Compass"
+                        title={
+                            <>
+                                What we aim for, and{' '}
+                                <span className="text-orange-500">how we get there.</span>
+                            </>
+                        }
+                        className="max-w-3xl"
+                    />
+
+                    <div className="mt-16 grid gap-6 md:grid-cols-2 lg:gap-10">
+                        <Reveal className="rounded-md bg-surface-0 p-10 shadow-[0_1px_0_rgba(11,18,32,0.06)] md:p-12">
+                            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-orange-500">
+                                Vision
+                            </p>
+                            <h3 className="mt-6 font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+                                {visionText.length > 220
+                                    ? visionText.slice(0, 220).trim() + '…'
+                                    : visionText ||
+                                      'A reliable, cost-effective project management and construction partner — locally and beyond.'}
+                            </h3>
+                        </Reveal>
+
+                        <Reveal
+                            delay={0.1}
+                            className="rounded-md bg-ink-900 p-10 text-surface-0 shadow-[0_1px_0_rgba(11,18,32,0.06)] md:p-12"
+                        >
+                            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-orange-500">
+                                Mission
+                            </p>
+                            <h3 className="mt-6 font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+                                {missionText.length > 240
+                                    ? missionText.slice(0, 240).trim() + '…'
+                                    : missionText ||
+                                      'Quality building construction services for clients of every scale — at a favourable cost.'}
+                            </h3>
+                        </Reveal>
+                    </div>
+                </div>
+            </section>
+
+            {/* Leadership */}
+            {leadership.length > 0 && (
+                <section className="bg-surface-0 py-24 md:py-32">
+                    <div className="wrap">
+                        <SectionHeading
+                            eyebrow="Leadership"
+                            title={
+                                <>
+                                    The people{' '}
+                                    <span className="text-orange-500">answerable</span> for the work.
+                                </>
+                            }
+                            className="max-w-3xl"
+                        />
+                        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+                            {leadership.map((member, idx) => (
+                                <TeamCard
+                                    key={member.id}
+                                    member={member}
+                                    index={idx}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Partners */}
+            {partners.length > 0 && (
+                <section className="bg-surface-50 py-24 md:py-32">
+                    <div className="wrap">
+                        <SectionHeading
+                            eyebrow="Clients & partners"
+                            title={
+                                <>
+                                    In good{' '}
+                                    <span className="text-orange-500">company.</span>
+                                </>
+                            }
+                            className="max-w-2xl"
+                        />
+                        <div className="mt-16">
+                            <LogoGrid partners={partners} />
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            <CtaBand
+                eyebrow="Work with us"
+                title="Have a project, or need a second opinion?"
+                body="A first call costs nothing. Tell us what you're working on and we'll tell you straight whether we can help, what it costs, and how long it takes."
+            />
+        </PublicLayout>
+    );
+}

@@ -3,3 +3,125 @@
 
 @source "../views";
 @source "../js";
+
+@theme {
+    /* Brand palette — orange is non-negotiable, the rest tuned for editorial weight. */
+    --color-orange-50: #FFF1E8;
+    --color-orange-200: #FBC9A8;
+    --color-orange-500: #F26722;
+    --color-orange-600: #C8501A;
+    --color-orange-700: #9A3B11;
+
+    --color-ink-900: #0B1220;
+    --color-ink-800: #131B2C;
+    --color-ink-700: #1F2A3D;
+    --color-ink-600: #2D3A50;
+    --color-ink-500: #5B6577;
+    --color-ink-400: #8B93A3;
+    --color-ink-300: #BFC4CE;
+
+    --color-surface-0: #FFFFFF;
+    --color-surface-50: #F7F6F2;
+    --color-surface-100: #EDEAE2;
+    --color-surface-200: #DED9CC;
+
+    --color-concrete: #D4B996;
+
+    /* Typography — Cabinet Grotesk for display, Inter for body, JetBrains Mono for numerics. */
+    --font-display: "Cabinet Grotesk", "Inter", system-ui, sans-serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+    /* Display sizes — large enough to do editorial heavy lifting. */
+    --text-display-xl: 6rem;       /* 96px */
+    --text-display-xl--line-height: 0.98;
+    --text-display-xl--letter-spacing: -0.03em;
+    --text-display-lg: 4.5rem;     /* 72px */
+    --text-display-lg--line-height: 1;
+    --text-display-lg--letter-spacing: -0.025em;
+    --text-display-md: 3rem;       /* 48px */
+    --text-display-md--line-height: 1.05;
+    --text-display-md--letter-spacing: -0.02em;
+
+    /* Editorial easing — calm, considered, slow ease-out. */
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Container & spacing tweaks. */
+    --spacing-section: 7rem;
+}
+
+/* Custom font faces — Cabinet Grotesk from Fontshare, fall back to Inter/system. */
+@font-face {
+    font-family: "Cabinet Grotesk";
+    src: url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800,900&display=swap");
+    font-display: swap;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    body {
+        background-color: var(--color-surface-0);
+        color: var(--color-ink-900);
+        font-family: var(--font-sans);
+        font-size: 17px;
+        line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-ink-900);
+    }
+
+    ::selection {
+        background-color: var(--color-orange-500);
+        color: white;
+    }
+}
+
+@layer utilities {
+    .wrap {
+        max-width: 80rem;
+        margin-inline: auto;
+        padding-inline: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .wrap {
+            padding-inline: 2.5rem;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .wrap {
+            padding-inline: 4rem;
+        }
+    }
+
+    .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--color-ink-500);
+    }
+
+    .reveal-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 700ms var(--ease-editorial), transform 700ms var(--ease-editorial);
+    }
+
+    .reveal-up.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

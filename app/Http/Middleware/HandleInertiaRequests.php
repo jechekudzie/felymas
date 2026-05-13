@@ -7,24 +7,14 @@ use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determine the current asset version.
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
     /**
-     * Define the props that are shared by default.
-     *
      * @return array<string, mixed>
      */
     public function share(Request $request): array
@@ -33,6 +23,18 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'company' => [
+                'email' => 'info@felymas.com',
+                'phone' => ['+263 242 776 543', '+263 772 123 456'],
+                'address' => ['12 Felymas House', 'Borrowdale, Harare', 'Zimbabwe'],
+                'social' => [
+                    'linkedin' => 'https://www.linkedin.com/company/felymas-consultants',
+                    'facebook' => 'https://www.facebook.com/felymasconsultants',
+                ],
+            ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message'),
             ],
         ];
     }

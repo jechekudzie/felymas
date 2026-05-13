@@ -14,12 +14,9 @@ use App\Http\Controllers\SlidersController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\VisionController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-// Inertia smoke-test landing — the React/Tailwind public site will replace this in phase 1.
-Route::get('/', fn () => Inertia::render('Welcome'));
-
-// Public site (Blade) — ported page-by-page in phase 2.
+// Public site (React + Inertia, fed by SiteController).
+Route::get('/', [SiteController::class, 'index']);
 Route::get('/about', [SiteController::class, 'about']);
 Route::get('/service', [SiteController::class, 'service']);
 Route::get('/our_team', [SiteController::class, 'ourTeam']);
