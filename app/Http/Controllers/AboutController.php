@@ -26,7 +26,7 @@ class AboutController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'description' => 'required',
         ]);
 
@@ -64,7 +64,7 @@ class AboutController extends Controller
     public function imageCover(Request $request, About $about)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($about->path && file_exists(public_path($about->path))) {

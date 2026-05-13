@@ -22,7 +22,7 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'name' => 'required',
             'description' => 'nullable',
         ]);
@@ -73,7 +73,7 @@ class ProjectsController extends Controller
     public function imageCover(Request $request, Project $project)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($project->path && file_exists(public_path($project->path))) {

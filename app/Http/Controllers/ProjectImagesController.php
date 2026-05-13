@@ -22,7 +22,7 @@ class ProjectImagesController extends Controller
     {
         $request->validate([
             'file' => 'required',
-            'file.*' => 'file|image',
+            'file.*' => 'file|image|max:5120',
         ]);
 
         $files = $request->file('file');

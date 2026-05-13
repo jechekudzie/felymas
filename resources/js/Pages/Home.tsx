@@ -1,14 +1,15 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { useState } from 'react';
 import CtaBand from '@/Components/public/CtaBand';
 import Hero from '@/Components/public/Hero';
 import LogoGrid from '@/Components/public/LogoGrid';
+import ProjectPreviewModal from '@/Components/public/ProjectPreviewModal';
 import ProjectTile from '@/Components/public/ProjectTile';
 import Reveal from '@/Components/public/Reveal';
 import SectionHeading from '@/Components/public/SectionHeading';
 import ServiceCard from '@/Components/public/ServiceCard';
 import StatStrip from '@/Components/public/StatStrip';
-import TeamCard from '@/Components/public/TeamCard';
 import PublicLayout from '@/Layouts/PublicLayout';
 import type {
     PartnerLogo,
@@ -33,6 +34,7 @@ export default function Home({
     members,
     partners,
 }: HomeProps) {
+    const [activeProject, setActiveProject] = useState<Project | null>(null);
     const featuredProjects = projects.slice(0, 6);
     const featuredTeam = members.slice(0, 3);
     const tileSizes: Array<'tall' | 'wide' | 'square'> = [
@@ -56,10 +58,13 @@ export default function Home({
             />
 
             {/* About strip */}
-            <section id="about" className="bg-surface-0 py-24 md:py-32">
+            <section id="about" className="bg-surface-0 py-16 sm:py-24 md:py-32">
                 <div className="wrap grid gap-16 md:grid-cols-12 md:gap-12 lg:gap-20">
                     <Reveal className="md:col-span-5">
-                        <p className="eyebrow">01 &middot; The practice</p>
+                        <p className="eyebrow">
+                            <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                            01 &middot; The practice
+                        </p>
                         <h2 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-ink-900 md:text-5xl lg:text-6xl">
                             A consultancy built around <span className="text-orange-500">finished buildings</span>, not promises.
                         </h2>
@@ -96,7 +101,7 @@ export default function Home({
             <StatStrip />
 
             {/* Services */}
-            <section id="services" className="bg-surface-0 py-24 md:py-32">
+            <section id="services" className="bg-surface-0 py-16 sm:py-24 md:py-32">
                 <div className="wrap">
                     <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
                         <SectionHeading
@@ -131,9 +136,21 @@ export default function Home({
                 </div>
             </section>
 
-            {/* Featured projects — asymmetric grid */}
-            <section id="work" className="bg-surface-50 py-24 md:py-32">
-                <div className="wrap">
+            {/* Featured projects — click to open preview modal */}
+            <section id="work" className="relative bg-surface-50 py-16 sm:py-24 md:py-32">
+                {/* Blueprint grid background */}
+                <div
+                    aria-hidden
+                    className="absolute inset-0 opacity-[0.35]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(to right, rgba(11,18,32,0.05) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(11,18,32,0.05) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '40px 40px',
+                    }}
+                />
+                <div className="relative wrap">
                     <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
                         <SectionHeading
                             eyebrow="03 · Recent work"
@@ -143,9 +160,13 @@ export default function Home({
                                     <span className="text-orange-500">projects.</span>
                                 </>
                             }
-                            intro="A cross-section of completed and current commissions across residential, commercial, and institutional sectors."
+                            intro="A cross-section of completed and current commissions. Click any tile for a quick preview, or open the full case study."
                             className="max-w-2xl"
                         />
+                        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink-500">
+                            <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                            {featuredProjects.length.toString().padStart(2, '0')} projects shown
+                        </p>
                     </div>
 
                     <div className="mt-16 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[auto] lg:gap-5">
@@ -155,15 +176,16 @@ export default function Home({
                                 project={project}
                                 index={idx}
                                 size={tileSizes[idx] ?? 'square'}
+                                onSelect={(p) => setActiveProject(p)}
                             />
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Team teaser */}
+            {/* Team teaser — editorial photo tiles with overlay */}
             {featuredTeam.length > 0 && (
-                <section className="bg-surface-0 py-24 md:py-32">
+                <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
                             <SectionHeading
@@ -186,13 +208,43 @@ export default function Home({
                             </Link>
                         </div>
 
-                        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
                             {featuredTeam.map((member, idx) => (
-                                <TeamCard
+                                <Reveal
                                     key={member.id}
-                                    member={member}
-                                    index={idx}
-                                />
+                                    delay={idx * 0.06}
+                                    className="group relative overflow-hidden bg-ink-900"
+                                >
+                                    <div className="relative aspect-[5/6] w-full overflow-hidden">
+                                        <div
+                                            className="absolute inset-0 bg-cover bg-center grayscale transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] group-hover:grayscale-0"
+                                            style={{ backgroundImage: `url(${member.image})` }}
+                                        />
+                                        <div
+                                            aria-hidden
+                                            className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/45 to-ink-900/10"
+                                        />
+                                        {/* Construction-style index badge */}
+                                        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-ink-900/70 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-surface-0/90 backdrop-blur-sm">
+                                            <span className="inline-block h-1 w-1 bg-orange-500" />
+                                            N&deg; {String(idx + 1).padStart(2, '0')}
+                                        </span>
+                                        {/* Overlay text — always visible, in white */}
+                                        <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                                            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-orange-500">
+                                                {member.position}
+                                            </p>
+                                            <h3 className="mt-2 font-display text-lg font-bold leading-tight tracking-tight text-surface-0 [text-shadow:0_1px_12px_rgba(11,18,32,0.6)] md:text-xl">
+                                                {member.name}
+                                            </h3>
+                                            {member.qualification && (
+                                                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-surface-0/85">
+                                                    {member.qualification}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
@@ -201,7 +253,7 @@ export default function Home({
 
             {/* Partners */}
             {partners.length > 0 && (
-                <section className="bg-surface-50 py-24 md:py-32">
+                <section className="bg-surface-50 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <SectionHeading
                             eyebrow="05 · In good company"
@@ -224,6 +276,12 @@ export default function Home({
                 title="Have a project that has to land?"
                 body="Tell us about it. Short engagements, long programs, single-stage advisory or full delivery — we'll tell you in a first call whether we can help."
                 cta={{ label: 'Start a project', href: '/contact' }}
+            />
+
+            {/* Project preview modal — opens when a tile is clicked */}
+            <ProjectPreviewModal
+                project={activeProject}
+                onClose={() => setActiveProject(null)}
             />
         </PublicLayout>
     );

@@ -73,7 +73,7 @@ export default function BlogDetail({ post, recent }: BlogDetailProps) {
 
             {/* Recent */}
             {recent.length > 0 && (
-                <section className="border-t border-ink-900/10 bg-surface-50 py-24 md:py-32">
+                <section className="border-t border-ink-900/10 bg-surface-50 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <Reveal>
                             <p className="eyebrow">More from the journal</p>

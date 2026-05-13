@@ -22,7 +22,7 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'title' => 'required',
             'description' => 'required',
         ]);
@@ -73,7 +73,7 @@ class BlogController extends Controller
     public function imageCover(Request $request, Blog $blog)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($blog->path && file_exists(public_path($blog->path))) {

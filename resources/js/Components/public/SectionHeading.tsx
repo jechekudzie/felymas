@@ -28,13 +28,13 @@ export default function SectionHeading({
             {eyebrow && <p className="eyebrow">{eyebrow}</p>}
             <h2
                 className={clsx(
-                    'mt-5 font-display text-4xl font-bold leading-[1.05] tracking-tight text-ink-900 sm:text-5xl md:text-6xl',
+                    'mt-4 font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink-900 sm:mt-5 sm:text-4xl md:text-5xl lg:text-6xl',
                 )}
             >
                 {title}
             </h2>
             {intro && (
-                <p className="mt-6 text-lg leading-relaxed text-ink-700">
+                <p className="mt-5 text-base leading-relaxed text-ink-700 sm:mt-6 sm:text-lg">
                     {intro}
                 </p>
             )}

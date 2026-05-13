@@ -1,9 +1,13 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { type FormEvent } from 'react';
+import PageHero from '@/Components/public/PageHero';
 import Reveal from '@/Components/public/Reveal';
 import PublicLayout from '@/Layouts/PublicLayout';
 import type { CompanyInfo } from '@/types/public';
+
+const GOOGLE_MAP_SRC =
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.562952924264!2d31.037984276003748!3d-17.812225875872567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1931a589ab18f103%3A0xffee52c0c9b22d!2sFelymas%20Consultants%20International!5e0!3m2!1sen!2szw!4v1778686513256!5m2!1sen!2szw';
 
 type SharedProps = {
     company: CompanyInfo;
@@ -38,142 +42,215 @@ export default function Contact() {
         <PublicLayout>
             <Head title="Contact — Felymas Consultants International" />
 
-            <section className="bg-surface-0 pb-16 pt-40 md:pb-24 md:pt-48">
-                <div className="wrap">
-                    <Reveal>
-                        <p className="eyebrow">Talk to us</p>
-                    </Reveal>
-                    <Reveal delay={0.05}>
-                        <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
-                            Tell us about your project —{' '}
-                            <span className="text-orange-500">we&rsquo;ll come back within one business day.</span>
-                        </h1>
+            <PageHero
+                eyebrow="04 · Talk to us"
+                title="Tell us about your project —"
+                accent="we'll come back within one business day."
+                intro="Short engagement, long programme, single-stage advisory or full delivery — send us a brief and we'll come back with scope, programme, and fee."
+            />
+
+            {/* Breathing room between hero and content */}
+            <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
+                <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-12">
+                    {/* Left: contact details only */}
+                    <div className="lg:col-span-5">
+                        <Reveal>
+                            <p className="eyebrow">
+                                <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                                Get in touch
+                            </p>
+                            <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+                                Reach the office directly.
+                            </h2>
+                            <p className="mt-4 max-w-md text-base leading-relaxed text-ink-700">
+                                Call, email, or drop in &mdash; whichever&rsquo;s easiest.
+                                The map below shows our office on Harvey Brown Avenue.
+                            </p>
+                        </Reveal>
+                        <Reveal delay={0.05}>
+                            <div className="mt-8 grid divide-y divide-ink-900/10 rounded-md border border-ink-900/10 bg-surface-0">
+                                <div className="flex items-start gap-4 p-5">
+                                    <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-500">
+                                        <MapPin size={16} />
+                                    </span>
+                                    <div>
+                                        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                                            Head Office
+                                        </p>
+                                        <p className="mt-1 text-base leading-relaxed text-ink-900">
+                                            {company.address.join(', ')}
+                                        </p>
+                                    </div>
+                                </div>
+                                <a
+                                    href={`mailto:${company.email}`}
+                                    className="flex items-start gap-4 p-5 transition hover:bg-surface-50"
+                                >
+                                    <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-500">
+                                        <Mail size={16} />
+                                    </span>
+                                    <div>
+                                        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                                            Email
+                                        </p>
+                                        <p className="mt-1 text-base text-ink-900">
+                                            {company.email}
+                                        </p>
+                                    </div>
+                                </a>
+                                {company.phone.map((p) => (
+                                    <a
+                                        key={p}
+                                        href={`tel:${p.replace(/\s+/g, '')}`}
+                                        className="flex items-start gap-4 p-5 transition hover:bg-surface-50"
+                                    >
+                                        <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-500">
+                                            <Phone size={16} />
+                                        </span>
+                                        <div>
+                                            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                                                Phone
+                                            </p>
+                                            <p className="mt-1 text-base text-ink-900">{p}</p>
+                                        </div>
+                                    </a>
+                                ))}
+                                <div className="flex items-start gap-4 p-5">
+                                    <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-500">
+                                        <Clock size={16} />
+                                    </span>
+                                    <div>
+                                        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                                            Hours
+                                        </p>
+                                        <p className="mt-1 text-base text-ink-900">
+                                            Mon&ndash;Fri &middot; 08:00&ndash;17:00 CAT
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    </div>
+
+                    {/* Right: form card */}
+                    <Reveal delay={0.1} className="lg:col-span-7">
+                        <div className="rounded-md bg-surface-50 p-6 ring-1 ring-ink-900/10 sm:p-8 md:p-10 lg:p-12">
+                            <p className="eyebrow">
+                                <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                                Send a brief
+                            </p>
+                            <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+                                Let&rsquo;s start a conversation.
+                            </h2>
+                            <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-700">
+                                Fill in a few details and we&rsquo;ll come back within one
+                                business day. Calls and written proposals are on us.
+                            </p>
+
+                            <form onSubmit={submit} className="mt-10 space-y-6" noValidate>
+                                {(flashMessage || recentlySuccessful) && (
+                                    <div className="flex items-start gap-3 rounded-md border border-orange-500/30 bg-orange-50 p-4 text-base text-ink-900">
+                                        <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-500 text-surface-0">
+                                            <Send size={12} />
+                                        </span>
+                                        <span>
+                                            {flashMessage ||
+                                                'Thank you — your message is on its way. We’ll reply within one business day.'}
+                                        </span>
+                                    </div>
+                                )}
+
+                                <Field
+                                    label="Subject"
+                                    placeholder="Enquiry about a project, advisory, etc."
+                                    name="subject"
+                                    value={data.subject}
+                                    onChange={(v) => setData('subject', v)}
+                                    error={errors.subject}
+                                />
+                                <div className="grid gap-6 sm:grid-cols-2">
+                                    <Field
+                                        label="Your name"
+                                        placeholder="Full name"
+                                        name="name"
+                                        value={data.name}
+                                        onChange={(v) => setData('name', v)}
+                                        error={errors.name}
+                                    />
+                                    <Field
+                                        label="Phone"
+                                        placeholder="+263 …"
+                                        name="number"
+                                        value={data.number}
+                                        onChange={(v) => setData('number', v)}
+                                        error={errors.number}
+                                    />
+                                </div>
+                                <Field
+                                    label="Email"
+                                    placeholder="you@company.com"
+                                    name="email"
+                                    type="email"
+                                    value={data.email}
+                                    onChange={(v) => setData('email', v)}
+                                    error={errors.email}
+                                />
+                                <Field
+                                    label="Tell us about the project"
+                                    placeholder="A short brief — location, scope, timing, anything we should know."
+                                    name="message"
+                                    value={data.message}
+                                    onChange={(v) => setData('message', v)}
+                                    error={errors.message}
+                                    multiline
+                                />
+
+                                <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                                        We reply within 1 business day
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        disabled={processing}
+                                        className="group inline-flex items-center gap-3 rounded-full bg-orange-500 px-7 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-surface-0 shadow-[0_8px_24px_-8px_rgba(242,103,34,0.6)] transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+                                    >
+                                        {processing ? 'Sending…' : 'Send message'}
+                                        <Send
+                                            size={14}
+                                            className="transition-transform duration-500 group-hover:translate-x-1"
+                                        />
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </Reveal>
                 </div>
             </section>
 
-            <section className="bg-surface-0 pb-24 md:pb-32">
-                <div className="wrap grid gap-16 md:grid-cols-12 md:gap-12 lg:gap-20">
-                    {/* Studio info */}
-                    <Reveal className="md:col-span-5">
-                        <div className="space-y-10">
-                            <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                                    Studio
-                                </p>
-                                <div className="mt-4 flex items-start gap-4">
-                                    <MapPin size={20} className="mt-1 shrink-0 text-orange-500" />
-                                    <div className="text-lg leading-relaxed text-ink-900">
-                                        {company.address.map((line, idx) => (
-                                            <span key={idx} className="block">
-                                                {line}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                                    Email
-                                </p>
-                                <a
-                                    href={`mailto:${company.email}`}
-                                    className="mt-4 flex items-center gap-4 text-lg text-ink-900 transition hover:text-orange-500"
-                                >
-                                    <Mail size={20} className="text-orange-500" />
-                                    {company.email}
-                                </a>
-                            </div>
-
-                            <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                                    Phone
-                                </p>
-                                <div className="mt-4 space-y-3">
-                                    {company.phone.map((p) => (
-                                        <a
-                                            key={p}
-                                            href={`tel:${p.replace(/\s+/g, '')}`}
-                                            className="flex items-center gap-4 text-lg text-ink-900 transition hover:text-orange-500"
-                                        >
-                                            <Phone size={20} className="text-orange-500" />
-                                            {p}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                                    Office hours
-                                </p>
-                                <p className="mt-4 text-lg leading-relaxed text-ink-900">
-                                    Mon–Fri &middot; 08:00–17:00 CAT
-                                </p>
-                            </div>
-                        </div>
+            {/* Map — full-width row below the form */}
+            <section className="bg-surface-50 pb-24 md:pb-32">
+                <div className="wrap">
+                    <Reveal>
+                        <p className="eyebrow">
+                            <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                            Find us
+                        </p>
+                        <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+                            1 Harvey Brown Avenue, Harare.
+                        </h2>
                     </Reveal>
-
-                    {/* Form */}
-                    <Reveal delay={0.1} className="md:col-span-7">
-                        <form onSubmit={submit} className="space-y-8" noValidate>
-                            {(flashMessage || recentlySuccessful) && (
-                                <div className="rounded-md border border-orange-500/30 bg-orange-50 p-5 text-base text-ink-900">
-                                    {flashMessage ||
-                                        'Thank you — your message is on its way. We&rsquo;ll be in touch within one business day.'}
-                                </div>
-                            )}
-
-                            <Field
-                                label="Subject"
-                                name="subject"
-                                value={data.subject}
-                                onChange={(v) => setData('subject', v)}
-                                error={errors.subject}
-                            />
-                            <div className="grid gap-6 md:grid-cols-2">
-                                <Field
-                                    label="Your name"
-                                    name="name"
-                                    value={data.name}
-                                    onChange={(v) => setData('name', v)}
-                                    error={errors.name}
-                                />
-                                <Field
-                                    label="Phone"
-                                    name="number"
-                                    value={data.number}
-                                    onChange={(v) => setData('number', v)}
-                                    error={errors.number}
-                                />
-                            </div>
-                            <Field
-                                label="Email"
-                                name="email"
-                                type="email"
-                                value={data.email}
-                                onChange={(v) => setData('email', v)}
-                                error={errors.email}
-                            />
-                            <Field
-                                label="Tell us about the project"
-                                name="message"
-                                value={data.message}
-                                onChange={(v) => setData('message', v)}
-                                error={errors.message}
-                                multiline
-                            />
-
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="group inline-flex items-center gap-4 rounded-full bg-orange-500 px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-surface-0 transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
-                            >
-                                {processing ? 'Sending…' : 'Send message'}
-                                <Send size={16} className="transition-transform duration-500 group-hover:translate-x-1" />
-                            </button>
-                        </form>
+                    <Reveal delay={0.05} as="figure" className="mt-10 aspect-[16/9] w-full overflow-hidden rounded-md bg-ink-100 ring-1 ring-ink-900/10 md:aspect-[21/9]">
+                        <iframe
+                            src={GOOGLE_MAP_SRC}
+                            title="Felymas Consultants International — Harare office"
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            className="h-full w-full"
+                        />
                     </Reveal>
                 </div>
             </section>
@@ -188,36 +265,50 @@ type FieldProps = {
     onChange: (v: string) => void;
     error?: string;
     type?: string;
+    placeholder?: string;
     multiline?: boolean;
 };
 
-function Field({ label, name, value, onChange, error, type = 'text', multiline }: FieldProps) {
+function Field({
+    label,
+    name,
+    value,
+    onChange,
+    error,
+    type = 'text',
+    placeholder,
+    multiline,
+}: FieldProps) {
     const baseClasses =
-        'block w-full border-0 border-b border-ink-900/20 bg-transparent px-0 py-3 text-lg text-ink-900 placeholder:text-ink-400 focus:border-orange-500 focus:outline-none focus:ring-0 transition-colors';
+        'block w-full rounded-md border border-ink-900/15 bg-surface-0 px-4 py-3 text-base text-ink-900 placeholder:text-ink-400 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20';
 
     return (
         <label className="block">
-            <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+            <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-700">
                 {label}
             </span>
-            {multiline ? (
-                <textarea
-                    name={name}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    rows={5}
-                    className={baseClasses + ' resize-none'}
-                />
-            ) : (
-                <input
-                    type={type}
-                    name={name}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    autoComplete="off"
-                    className={baseClasses}
-                />
-            )}
+            <span className="mt-2 block">
+                {multiline ? (
+                    <textarea
+                        name={name}
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        placeholder={placeholder}
+                        rows={5}
+                        className={baseClasses + ' resize-none'}
+                    />
+                ) : (
+                    <input
+                        type={type}
+                        name={name}
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        placeholder={placeholder}
+                        autoComplete="off"
+                        className={baseClasses}
+                    />
+                )}
+            </span>
             {error && (
                 <span className="mt-2 block font-mono text-[11px] uppercase tracking-[0.18em] text-orange-600">
                     {error}

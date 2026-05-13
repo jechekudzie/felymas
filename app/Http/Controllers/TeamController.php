@@ -22,7 +22,7 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'name' => 'required',
             'position' => 'required',
             'qualification' => 'required',
@@ -79,7 +79,7 @@ class TeamController extends Controller
     public function imageCover(Request $request, Team $team)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($team->path && file_exists(public_path($team->path))) {

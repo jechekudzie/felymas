@@ -22,7 +22,7 @@ class SlidersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'caption' => 'required',
         ]);
 
@@ -70,7 +70,7 @@ class SlidersController extends Controller
     public function imageCover(Request $request, Slider $slider)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($slider->path && file_exists(public_path($slider->path))) {

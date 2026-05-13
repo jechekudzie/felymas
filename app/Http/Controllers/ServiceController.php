@@ -22,7 +22,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'name' => 'required',
             'description' => 'required',
         ]);
@@ -73,7 +73,7 @@ class ServiceController extends Controller
     public function imageCover(Request $request, Service $service)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($service->path && file_exists(public_path($service->path))) {

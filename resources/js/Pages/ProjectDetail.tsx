@@ -93,7 +93,7 @@ export default function ProjectDetail({ project, others }: ProjectDetailProps) {
             </section>
 
             {/* Narrative */}
-            <section className="bg-surface-0 py-24 md:py-32">
+            <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
                 <div className="wrap grid gap-12 md:grid-cols-12 md:gap-16">
                     <Reveal className="md:col-span-4">
                         <p className="eyebrow">Brief</p>
@@ -134,7 +134,7 @@ export default function ProjectDetail({ project, others }: ProjectDetailProps) {
 
             {/* Other projects */}
             {otherFew.length > 0 && (
-                <section className="bg-surface-0 py-24 md:py-32">
+                <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
                             <Reveal>

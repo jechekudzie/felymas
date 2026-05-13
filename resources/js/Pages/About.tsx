@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import CtaBand from '@/Components/public/CtaBand';
 import LogoGrid from '@/Components/public/LogoGrid';
+import PageHero from '@/Components/public/PageHero';
 import Reveal from '@/Components/public/Reveal';
 import SectionHeading from '@/Components/public/SectionHeading';
 import TeamCard from '@/Components/public/TeamCard';
@@ -31,6 +32,22 @@ function plainText(html: string | undefined | null): string {
     return decodeHtml(html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
 }
 
+/**
+ * Split a long paragraph into 2–3 sentence chunks for editorial readability,
+ * stripping a leading "ABOUT … " all-caps label if present.
+ */
+function splitIntoParagraphs(text: string, sentencesPerPara = 3): string[] {
+    if (!text) return [];
+    // strip an opening "ABOUT FELYMAS …" label
+    const cleaned = text.replace(/^ABOUT [A-Z &]+(?:INTERNATIONAL)?\.?\s+/i, '');
+    const sentences = cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned];
+    const paras: string[] = [];
+    for (let i = 0; i < sentences.length; i += sentencesPerPara) {
+        paras.push(sentences.slice(i, i + sentencesPerPara).join(' ').trim());
+    }
+    return paras;
+}
+
 export default function About({
     about,
     vision,
@@ -42,63 +59,47 @@ export default function About({
     const visionText = plainText(vision?.description);
     const missionText = plainText(mission?.description);
     const leadership = members.slice(0, 4);
+    const paragraphs = splitIntoParagraphs(aboutText, 3);
+    const lead = paragraphs[0];
+    const body = paragraphs.slice(1);
 
     return (
         <PublicLayout>
             <Head title="About — Felymas Consultants International" />
 
-            {/* Editorial intro */}
-            <section className="bg-surface-0 pb-24 pt-40 md:pb-32 md:pt-48">
-                <div className="wrap">
-                    <Reveal>
-                        <p className="eyebrow">The practice</p>
-                    </Reveal>
-                    <Reveal delay={0.05}>
-                        <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
-                            Built for clients who need their projects to{' '}
-                            <span className="text-orange-500">land — and stay landed.</span>
-                        </h1>
-                    </Reveal>
-                    <Reveal delay={0.1}>
-                        <p className="mt-10 max-w-2xl text-lg leading-relaxed text-ink-700">
-                            Felymas Consultants International is a multi-disciplinary
-                            construction and engineering consultancy headquartered in
-                            Harare, with active work across Zimbabwe and South Africa.
-                            We were founded on a simple belief: that good projects
-                            require equal parts technical rigour and plain-spoken
-                            client communication.
-                        </p>
-                    </Reveal>
-                </div>
-            </section>
+            <PageHero
+                eyebrow="01 · The practice"
+                title="Built for clients who need their projects to"
+                accent="land — and stay landed."
+                intro="Felymas Consultants International is a multi-disciplinary construction and engineering consultancy with active work across Zimbabwe and South Africa. We were founded on a simple belief: good projects require equal parts technical rigour and plain-spoken client communication."
+            />
 
-            {/* Hero image */}
-            {about?.image && (
-                <Reveal as="figure" className="relative isolate aspect-[16/9] w-full overflow-hidden bg-ink-800">
-                    <img
-                        src={about.image}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                    />
-                </Reveal>
-            )}
-
-            {/* Long-form body */}
-            {aboutText && (
-                <section className="bg-surface-0 py-24 md:py-32">
-                    <div className="wrap grid gap-12 md:grid-cols-12">
-                        <Reveal className="md:col-span-4">
-                            <p className="eyebrow">Who we are</p>
-                            <h2 className="mt-6 font-display text-3xl font-bold leading-tight tracking-tight text-ink-900 md:text-4xl">
+            {/* Long-form body — heading row, then 2-column text flow with a drop cap */}
+            {paragraphs.length > 0 && (
+                <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
+                    <div className="wrap">
+                        <Reveal className="max-w-3xl">
+                            <p className="eyebrow">
+                                <span className="mr-2 inline-block h-2 w-2 align-middle bg-orange-500" />
+                                Who we are
+                            </p>
+                            <h2 className="mt-6 font-display text-3xl font-bold leading-[1.1] tracking-tight text-ink-900 md:text-4xl lg:text-5xl">
                                 Engineers, project managers, and quantity surveyors — under one roof.
                             </h2>
                         </Reveal>
-                        <Reveal delay={0.1} className="md:col-span-7 md:col-start-6">
-                            <div className="prose prose-lg max-w-none text-ink-700">
-                                {aboutText.split(/\n+|(?<=\.) (?=[A-Z])/).slice(0, 6).map((para, idx) => (
-                                    <p key={idx} className="mt-4 text-lg leading-relaxed first:mt-0">
-                                        {para.trim()}
+
+                        <Reveal delay={0.1}>
+                            <div className="mt-12 max-w-5xl border-t border-ink-900/10 pt-10 md:columns-2 md:gap-12">
+                                {paragraphs.map((para, idx) => (
+                                    <p
+                                        key={idx}
+                                        className={`mb-5 break-inside-avoid text-base leading-relaxed text-ink-700 md:text-lg ${
+                                            idx === 0
+                                                ? 'first-letter:float-left first-letter:mr-2 first-letter:font-display first-letter:text-5xl first-letter:font-bold first-letter:leading-[0.85] first-letter:text-orange-500 sm:first-letter:mr-3 sm:first-letter:text-6xl md:first-letter:text-7xl'
+                                                : ''
+                                        }`}
+                                    >
+                                        {para}
                                     </p>
                                 ))}
                             </div>
@@ -108,7 +109,7 @@ export default function About({
             )}
 
             {/* Vision + Mission */}
-            <section className="bg-surface-50 py-24 md:py-32">
+            <section className="bg-surface-50 py-16 sm:py-24 md:py-32">
                 <div className="wrap">
                     <SectionHeading
                         eyebrow="Compass"
@@ -154,7 +155,7 @@ export default function About({
 
             {/* Leadership */}
             {leadership.length > 0 && (
-                <section className="bg-surface-0 py-24 md:py-32">
+                <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <SectionHeading
                             eyebrow="Leadership"
@@ -181,7 +182,7 @@ export default function About({
 
             {/* Partners */}
             {partners.length > 0 && (
-                <section className="bg-surface-50 py-24 md:py-32">
+                <section className="bg-surface-50 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <SectionHeading
                             eyebrow="Clients & partners"

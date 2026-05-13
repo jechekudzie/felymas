@@ -20,7 +20,7 @@ class MissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'description' => 'required',
         ]);
 
@@ -58,7 +58,7 @@ class MissionController extends Controller
     public function imageCover(Request $request, Mission $mission)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($mission->path && file_exists(public_path($mission->path))) {

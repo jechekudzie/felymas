@@ -20,7 +20,7 @@ class VisionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'description' => 'required',
         ]);
 
@@ -58,7 +58,7 @@ class VisionController extends Controller
     public function imageCover(Request $request, Vision $vision)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($vision->path && file_exists(public_path($vision->path))) {

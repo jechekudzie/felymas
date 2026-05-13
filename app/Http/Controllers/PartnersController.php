@@ -22,7 +22,7 @@ class PartnersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
             'name' => 'required',
             'url' => 'nullable',
         ]);
@@ -73,7 +73,7 @@ class PartnersController extends Controller
     public function logoUpdate(Request $request, Partner $partner)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($partner->path && file_exists(public_path($partner->path))) {

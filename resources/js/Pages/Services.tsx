@@ -1,8 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowUpRight } from 'lucide-react';
 import CtaBand from '@/Components/public/CtaBand';
+import PageHero from '@/Components/public/PageHero';
 import Reveal from '@/Components/public/Reveal';
-import SectionHeading from '@/Components/public/SectionHeading';
 import PublicLayout from '@/Layouts/PublicLayout';
 import type { Service } from '@/types/public';
 
@@ -23,28 +23,12 @@ export default function Services({ services }: ServicesProps) {
         <PublicLayout>
             <Head title="Services — Felymas Consultants International" />
 
-            {/* Intro */}
-            <section className="bg-surface-0 pb-24 pt-40 md:pb-32 md:pt-48">
-                <div className="wrap">
-                    <Reveal>
-                        <p className="eyebrow">What we do</p>
-                    </Reveal>
-                    <Reveal delay={0.05}>
-                        <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
-                            Four disciplines.{' '}
-                            <span className="text-orange-500">One signature.</span>
-                        </h1>
-                    </Reveal>
-                    <Reveal delay={0.1}>
-                        <p className="mt-10 max-w-2xl text-lg leading-relaxed text-ink-700">
-                            Each service is led by a senior practitioner and
-                            backed by a multi-disciplinary team — so a project
-                            never falls into the gap between consultants. Commission
-                            us for one stage, or hand us the whole programme.
-                        </p>
-                    </Reveal>
-                </div>
-            </section>
+            <PageHero
+                eyebrow="02 · What we do"
+                title="Four disciplines."
+                accent="One signature."
+                intro="Each service is led by a senior practitioner and backed by a multi-disciplinary team — so a project never falls into the gap between consultants. Commission us for one stage, or hand us the whole programme."
+            />
 
             {/* Services as alternating editorial rows */}
             <section className="bg-surface-0">
@@ -61,12 +45,12 @@ export default function Services({ services }: ServicesProps) {
                                 className={`wrap grid gap-12 md:grid-cols-12 md:gap-16 ${reverse ? 'md:[grid-template-columns:repeat(12,minmax(0,1fr))]' : ''}`}
                             >
                                 <figure
-                                    className={`relative aspect-[4/3] overflow-hidden bg-ink-800 md:col-span-6 ${reverse ? 'md:order-2' : ''}`}
+                                    className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-ink-900 p-6 md:col-span-6 md:p-10 ${reverse ? 'md:order-2' : ''}`}
                                 >
                                     <img
                                         src={service.image}
                                         alt={service.name}
-                                        className="absolute inset-0 h-full w-full object-cover transition duration-1000 hover:scale-105"
+                                        className="max-h-full max-w-full object-contain transition-transform duration-1000 hover:scale-[1.03]"
                                         loading="lazy"
                                     />
                                 </figure>

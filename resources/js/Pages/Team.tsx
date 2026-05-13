@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import CtaBand from '@/Components/public/CtaBand';
+import PageHero from '@/Components/public/PageHero';
 import Reveal from '@/Components/public/Reveal';
 import TeamCard from '@/Components/public/TeamCard';
 import PublicLayout from '@/Layouts/PublicLayout';
@@ -17,28 +18,12 @@ export default function Team({ members }: TeamProps) {
         <PublicLayout>
             <Head title="Team — Felymas Consultants International" />
 
-            <section className="bg-surface-0 pb-24 pt-40 md:pb-32 md:pt-48">
-                <div className="wrap">
-                    <Reveal>
-                        <p className="eyebrow">The team</p>
-                    </Reveal>
-                    <Reveal delay={0.05}>
-                        <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight text-ink-900 md:text-6xl lg:text-7xl">
-                            Named engineers.{' '}
-                            <span className="text-orange-500">Real credentials.</span>{' '}
-                            Answerable for every commitment.
-                        </h1>
-                    </Reveal>
-                    <Reveal delay={0.1}>
-                        <p className="mt-10 max-w-2xl text-lg leading-relaxed text-ink-700">
-                            We&rsquo;re a multi-disciplinary practice led by registered
-                            engineers, project managers, and quantity surveyors. Every
-                            commission is steered by a named senior — not a junior
-                            checking back with someone unseen.
-                        </p>
-                    </Reveal>
-                </div>
-            </section>
+            <PageHero
+                eyebrow="03 · The team"
+                title="Named engineers. Real credentials."
+                accent="Answerable for every commitment."
+                intro="A multi-disciplinary practice led by registered engineers, project managers, and quantity surveyors. Every commission is steered by a named senior — not a junior checking back with someone unseen."
+            />
 
             {/* Lead */}
             {lead && (
@@ -78,7 +63,7 @@ export default function Team({ members }: TeamProps) {
 
             {/* Rest of team */}
             {rest.length > 0 && (
-                <section className="bg-surface-0 py-24 md:py-32">
+                <section className="bg-surface-0 py-16 sm:py-24 md:py-32">
                     <div className="wrap">
                         <Reveal>
                             <p className="eyebrow">Practice</p>

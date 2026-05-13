@@ -93,7 +93,7 @@ export default function Blog({ posts }: BlogProps) {
 
             {/* Rest as 2-col list */}
             {rest.length > 0 && (
-                <section className="border-t border-ink-900/10 bg-surface-50 py-24 md:py-32">
+                <section className="border-t border-ink-900/10 bg-surface-50 py-16 sm:py-24 md:py-32">
                     <div className="wrap grid gap-10 md:grid-cols-2 md:gap-14 lg:gap-20">
                         {rest.map((post, idx) => (
                             <Reveal key={post.id} delay={idx * 0.05}>

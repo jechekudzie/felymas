@@ -27,10 +27,9 @@ class HandleInertiaRequests extends Middleware
             'company' => [
                 'email' => 'info@felymas.com',
                 'phone' => ['+263 242 776 543', '+263 772 123 456'],
-                'address' => ['12 Felymas House', 'Borrowdale, Harare', 'Zimbabwe'],
+                'address' => ['1 Harvey Brown Ave', 'Harare', 'Zimbabwe'],
                 'social' => [
-                    'linkedin' => 'https://www.linkedin.com/company/felymas-consultants',
-                    'facebook' => 'https://www.facebook.com/felymasconsultants',
+                    'facebook' => 'https://www.facebook.com/profile.php?id=100064128396097',
                 ],
             ],
             'flash' => [

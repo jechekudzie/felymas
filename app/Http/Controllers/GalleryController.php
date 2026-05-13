@@ -23,7 +23,7 @@ class GalleryController extends Controller
     {
         $request->validate([
             'file' => 'required',
-            'file.*' => 'file|image',
+            'file.*' => 'file|image|max:5120',
             'caption' => 'required',
         ]);
 
@@ -77,7 +77,7 @@ class GalleryController extends Controller
     public function imageCover(Request $request, Gallery $gallery)
     {
         $request->validate([
-            'file' => 'required|file|image',
+            'file' => 'required|file|image|max:5120',
         ]);
 
         if ($gallery->path && file_exists(public_path($gallery->path))) {
