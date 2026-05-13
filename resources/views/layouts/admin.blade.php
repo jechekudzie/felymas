@@ -120,8 +120,8 @@
         .form-control:focus { border-color: var(--fci-orange) !important; box-shadow: 0 0 0 3px rgba(242,103,34,0.15) !important; }
         label, .control-label { font-family: "JetBrains Mono", monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--fci-ink-soft) !important; font-weight: 600; }
         .table thead th { font-family: "JetBrains Mono", monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--fci-ink-soft); border-bottom: 2px solid var(--fci-orange) !important; }
-        .preloader .loader__label { color: var(--fci-orange) !important; font-family: "Cabinet Grotesk", sans-serif; letter-spacing: 0.2em; }
-        .loader__figure { border-color: var(--fci-orange) !important; }
+        /* Hide the preloader entirely — markup removed, but kill anything left over in AdminBSB CSS */
+        .preloader { display: none !important; }
     </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -132,15 +132,6 @@
 </head>
 
 <body class="horizontal-nav skin-megna fixed-layout">
-<!-- ============================================================== -->
-<!-- Preloader - style you can find in spinners.css -->
-<!-- ============================================================== -->
-<div class="preloader">
-    <div class="loader">
-        <div class="loader__figure"></div>
-        <p class="loader__label">FELYMAS</p>
-    </div>
-</div>
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
@@ -195,81 +186,6 @@
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <ul class="navbar-nav my-lg-0">
-                    <!-- ============================================================== -->
-                    <!-- Comment -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
-                            <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
-                            <ul>
-                                <li>
-                                    <div class="drop-title">Notifications</div>
-                                </li>
-                                <li>
-                                    <div class="message-center">
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)">
-                                            <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
-                                            <div class="mail-contnet">
-                                                <h5>Luanch Admin</h5> <span
-                                                        class="mail-desc">Just see the my new admin!</span> <span
-                                                        class="time">9:30 AM</span></div>
-                                        </a>
-                                        <!-- Message -->
-
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="nav-link text-center link" href="javascript:void(0);"> <strong>Check all
-                                            notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- End Comment -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Messages -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="icon-note"></i>
-                            <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
-                        </a>
-                        <div class="dropdown-menu mailbox dropdown-menu-right animated bounceInDown"
-                             aria-labelledby="2">
-                            <ul>
-                                <li>
-                                    <div class="drop-title">You have 4 new messages</div>
-                                </li>
-                                <li>
-                                    <div class="message-center">
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)">
-                                            <div class="user-img"><img src="../assets/images/users/1.jpg" alt="user"
-                                                                       class="img-circle"> <span
-                                                        class="profile-status online pull-right"></span></div>
-                                            <div class="mail-contnet">
-                                                <h5>Pavan kumar</h5> <span
-                                                        class="mail-desc">Just see the my admin!</span> <span
-                                                        class="time">9:30 AM</span></div>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="nav-link text-center link" href="javascript:void(0);"> <strong>See all
-                                            e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- End Messages -->
-
                     <!-- ============================================================== -->
                     <!-- User Profile -->
                     <!-- ============================================================== -->
@@ -392,7 +308,7 @@
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer">
-        ©{{date('Y')}} Allied Health Practitioners Council
+        © {{ date('Y') }} Felymas Consultants International &middot; Admin
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->
@@ -420,11 +336,23 @@
 
 <!-- This page plugins -->
 @yield('plugins-js')
-<script src="{{asset('dist/js/dashboard1.js')}}"></script>
 
+<!-- CKEditor — only initialise when the editor textarea actually exists on the page,
+     and configure it so the editing iframe doesn't try to pull in AdminBSB's icon
+     fonts (which would CORS-fail inside the null-origin srcdoc iframe). -->
 <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace('editor');
+    (function () {
+        if (typeof CKEDITOR === 'undefined') return;
+        var el = document.getElementById('editor');
+        if (!el) return;
+        CKEDITOR.replace('editor', {
+            contentsCss: [],
+            removePlugins: 'elementspath',
+            resize_enabled: false,
+            removeButtons: 'About'
+        });
+    })();
 </script>
 </body>
 
